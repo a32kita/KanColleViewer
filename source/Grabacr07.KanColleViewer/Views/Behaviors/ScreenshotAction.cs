@@ -1,10 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Media.Imaging;
 using Grabacr07.KanColleViewer.ViewModels.Messages;
 using Grabacr07.KanColleViewer.Win32;
 using Livet.Behaviors.Messaging;
@@ -138,11 +140,33 @@ namespace Grabacr07.KanColleViewer.Views.Behaviors
 				graphics.ReleaseHdc(hdc);
 			}
 
-			var format = Path.GetExtension(path) == ".jpg"
-				? ImageFormat.Jpeg 
-				: ImageFormat.Png;
+			var pathExtension = Path.GetExtension(path);
+			if (pathExtension == ".clip")
+			{
+				using (var memoryStream = new MemoryStream())
+				{
+					image.Save(memoryStream, ImageFormat.Png);
+					memoryStream.Seek(0, SeekOrigin.Begin);
 
-			image.Save(path, format);
+					var bitmapDecoder = BitmapDecoder.Create(
+						memoryStream,
+						BitmapCreateOptions.PreservePixelFormat,
+						BitmapCacheOption.OnLoad );
+
+					var writable = new WriteableBitmap(bitmapDecoder.Frames.Single());
+					writable.Freeze();
+
+					Clipboard.SetImage(writable);
+				}
+			}
+			else
+			{
+				var format = pathExtension == ".jpg"
+					? ImageFormat.Jpeg
+					: ImageFormat.Png;
+
+				image.Save(path, format);
+			}
 		}
 	}
 }
