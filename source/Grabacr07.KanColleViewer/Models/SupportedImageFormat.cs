@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,5 +24,10 @@ namespace Grabacr07.KanColleViewer.Models
 		/// JPEG (Joint Photographic Experts Group) イメージ形式。
 		/// </summary>
 		Jpeg,
+
+		/// <summary>
+		/// スクリーン ショットとしてクリップ ボードへ転送します。
+		/// </summary>
+		Clipboard,
 	}
 }

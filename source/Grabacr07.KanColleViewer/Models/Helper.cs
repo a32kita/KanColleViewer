@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -44,9 +44,20 @@ namespace Grabacr07.KanColleViewer.Models
 				Settings.ScreenshotSettings.Destination,
 				$"KanColle-{DateTimeOffset.Now.LocalDateTime.ToString("yyMMdd-HHmmssff")}");
 
+			var extension = ".clip";
+			switch (Settings.ScreenshotSettings.Format.Value)
+			{
+				case SupportedImageFormat.Png:
+					extension = ".png";
+					break;
+				case SupportedImageFormat.Jpeg:
+					extension = ".jpg";
+					break;
+			}
+
 			filePath = Path.ChangeExtension(
 				filePath,
-				Settings.ScreenshotSettings.Format == SupportedImageFormat.Png ? ".png" : ".jpg");
+				extension);
 
 			return filePath;
 		}
