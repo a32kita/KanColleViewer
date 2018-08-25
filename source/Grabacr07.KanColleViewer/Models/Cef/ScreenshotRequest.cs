@@ -28,10 +28,30 @@ namespace Grabacr07.KanColleViewer.Models.Cef
 
 				var base64 = array[1];
 				var bytes = Convert.FromBase64String(base64);
+				var extension = Path.GetExtension(this.path);
 
-				using (var fs = new FileStream(this.path, FileMode.CreateNew))
+				if (extension == ".clip")
 				{
-					fs.Write(bytes, 0, bytes.Length);
+					// クリップボードへ転送
+					using (var ms = new MemoryStream(bytes))
+					{
+						ms.Seek(0, SeekOrigin.Begin);
+						var bi = new System.Windows.Media.Imaging.BitmapImage();
+						bi.BeginInit();
+						bi.CacheOption = System.Windows.Media.Imaging.BitmapCacheOption.OnLoad;
+						bi.StreamSource = ms;
+						bi.EndInit();
+						bi.Freeze();
+
+						System.Windows.Clipboard.SetImage(bi);
+					}
+				}
+				else
+				{
+					using (var fs = new FileStream(this.path, FileMode.CreateNew))
+					{
+						fs.Write(bytes, 0, bytes.Length);
+					}
 				}
 
 				this.source.SetResult(Unit.Default);

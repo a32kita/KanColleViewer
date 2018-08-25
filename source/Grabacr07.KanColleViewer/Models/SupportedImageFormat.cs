@@ -26,6 +26,11 @@ namespace Grabacr07.KanColleViewer.Models
 		/// JPEG (Joint Photographic Experts Group) イメージ形式。
 		/// </summary>
 		Jpeg,
+
+		/// <summary>
+		/// クリップボードへコピーします。
+		/// </summary>
+		ClipBoard,
 	}
 
 	public static class SupportedImageFormatExtensions
@@ -39,6 +44,9 @@ namespace Grabacr07.KanColleViewer.Models
 
 				case SupportedImageFormat.Jpeg:
 					return ".jpg";
+
+				case SupportedImageFormat.ClipBoard:
+					return ".clip";
 
 				default:
 					return "";
@@ -54,6 +62,9 @@ namespace Grabacr07.KanColleViewer.Models
 
 				case SupportedImageFormat.Jpeg:
 					return "image/jpeg";
+
+				case SupportedImageFormat.ClipBoard:
+					return "image/png";
 
 				default:
 					return "";
